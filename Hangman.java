@@ -21,6 +21,7 @@ public class Hangman {
         // Variables
         List<String> words = createWordList(file);
         List<Character> guessed = new ArrayList<>();
+        List<Character> incorrect = new ArrayList<>();
         Scanner key = new Scanner(System.in);
 
         // Create a random word
