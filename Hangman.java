@@ -8,8 +8,15 @@ public class Hangman  {
     static int numOfGuesses = 6;
     public static void main(String[] args) throws IOException {
 
+        String file = null;
         // Read the dictionary file
-        String file = "./words.txt";
+        if (args.length > 0) {
+            file = "./" + args[0];
+        } 
+        else {
+            file = "./words.txt";
+        }
+       
 
         // Create needed variables
         List<String> words = createWordList(file);
