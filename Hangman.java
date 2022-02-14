@@ -3,47 +3,43 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-public class Hangman  {
+public class Hangman {
+
+    // Classwide variables
     static Boolean gameOver = false;
     static int numOfGuesses = 6;
+
     public static void main(String[] args) throws IOException {
 
+        // Initialize the dictionary file
         String file = null;
-        // Read the dictionary file
         if (args.length > 0) {
             file = "./" + args[0];
-        } 
-        else {
+        } else {
             file = "./words.txt";
         }
-       
-
-        // Create needed variables
+        // Variables
         List<String> words = createWordList(file);
         List<Character> guessed = new ArrayList<>();
-        
-    
         Scanner key = new Scanner(System.in);
-        
+
         // Create a random word
         Random random = new Random();
         String word = words.get(random.nextInt(words.size()));
-              
-        // Print the word with guessed letters and blanks
+
+        // Print the word word for the first time, with all blanks
         printWord(word, guessed);
 
-        while(gameOver == false) {
+        while (gameOver == false) {
             getPlayerGuess(key, word, guessed);
         }
-            
 
-           
     }
 
     // Create word list
     public static List<String> createWordList(String fileDir) throws FileNotFoundException {
-        
-        // Create a list of words
+
+        // Create a list of words and return it
         Scanner scanner = new Scanner(new File(fileDir));
         List<String> words = new ArrayList<>();
         while (scanner.hasNext()) {
@@ -56,22 +52,27 @@ public class Hangman  {
     // Method that prints the current guessed game state
     public static void printWord(String word, List<Character> guessed) {
 
-        // Set gameover to be true initially, if any blanks remain, we set gameover back to false
+        // Set gameover to be true initially, if any blanks remain, we set gameover back
+        // to false
         gameOver = true;
+        System.out.println("\n");
         for (int i = 0; i < word.length(); i++) {
             char c = word.charAt(i);
             if (guessed.contains(c)) {
                 System.out.print(c + " ");
-            }
-            else {
+            } else {
                 System.out.print("_" + " ");
                 gameOver = false;
             }
         }
-        System.out.println();
-    
-    }
+        if (gameOver == true) {
+            System.out.println("\nYou win!");
+            System.exit(0);
+        }
 
+        System.out.println();
+
+    }
 
     // Method that takes a player guess and applies it to the guessed word
     public static void getPlayerGuess(Scanner scan, String word, List<Character> guessed) {
@@ -81,7 +82,7 @@ public class Hangman  {
         String guess = scan.next();
         char c = guess.charAt(0);
         guessed.add(c);
-        
+
         // Set correct guess to false initally and check if guess is correct
         Boolean guessCorrect = false;
         for (int i = 0; i < word.length(); i++) {
@@ -95,7 +96,7 @@ public class Hangman  {
             System.out.println("Incorrect guess");
             numOfGuesses--;
             System.out.println(numOfGuesses + " guesses remaining");
-            
+
         }
 
         // Print the word with the guessed letters and blanks
@@ -103,6 +104,7 @@ public class Hangman  {
 
         // Check if the game is over
         if (numOfGuesses == 0) {
+            System.out.println("Game over! The word was " + word);
             gameOver = true;
         }
     }
